@@ -15,7 +15,7 @@ Gerar receita para prestadores de serviços: O aplicativo deverá ser uma plataf
 Manter satisfação do usuário: Queremos garantir que os usuários estejam sempre satisfeitos. Para isso, coletamos feedback sobre transações, oferecemos espaço para opiniões e melhorias, e fornecemos guias de perguntas frequentes em um aplicativo em constante evolução.
 Ser um diferencial: Ele foi projetado para ser uma ferramenta onde ambos os usuários podem lucrar, seja recebendo o que foi acordado previamente ou comprando produtos a preços acessíveis.
 
-# 📷 Versão Inicial
+## 📷 Versão Inicial
 
 <div align="center" >
  <img src="https://github.com/EoLima/Projeto_EngenhariaDeSofware/assets/123023440/c0b4a751-5d68-4eac-b373-659249e9f735">
