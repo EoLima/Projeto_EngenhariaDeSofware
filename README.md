@@ -18,10 +18,11 @@ Ser um diferencial: Ele foi projetado para ser uma ferramenta onde ambos os usu�
 ## 📷 Versão Inicial
 
 <div align="center" >
- <img src="https://github.com/EoLima/Projeto_EngenhariaDeSofware/assets/123023440/c0b4a751-5d68-4eac-b373-659249e9f735">
+ <img src="https://github.com/EoLima/Projeto_EngenhariaDeSofware/assets/123023440/2f788235-effb-4a74-bb36-20905a03d2a3">
 </div>
 
 ## 🧑🏾‍💻 Ferramentas Utilizadas
+
 
 Este projeto foi desenvolvido com as seguintes tecnologias:
 
