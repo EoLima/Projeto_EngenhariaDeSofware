@@ -27,6 +27,8 @@ Ser um diferencial: Ele foi projetado para ser uma ferramenta onde ambos os usu�
 Este projeto foi desenvolvido com as seguintes tecnologias:
 
 - ✔️ NodeJS
+- ✔️ React Native
+- ✔️ Expo
 
 ### Contate-me
 
