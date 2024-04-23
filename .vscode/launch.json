@@ -1,0 +1,71 @@
+{
+  // Use o IntelliSense para saber mais sobre os atributos possíveis.
+  // Focalizar para exibir as descrições dos atributos existentes.
+  // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "TodolistApplication",
+      "request": "launch",
+      "mainClass": "br.com.lucaslima.todolist.TodolistApplication",
+      "projectName": "todolist"
+    },
+    {
+      "type": "java",
+      "name": "GeradoraDeFigurinhas",
+      "request": "launch",
+      "mainClass": "GeradoraDeFigurinhas",
+      "projectName": "Documentos_159ba868"
+    },
+    {
+      "type": "java",
+      "name": "Algoritmo2",
+      "request": "launch",
+      "mainClass": "Algoritmo2",
+      "projectName": "Documentos_159ba868"
+    },
+    {
+      "type": "java",
+      "name": "Algoritmo1",
+      "request": "launch",
+      "mainClass": "Algoritmo1",
+      "projectName": "Documentos_159ba868"
+    },
+    {
+      "type": "java",
+      "name": "Simple",
+      "request": "launch",
+      "mainClass": "Simple",
+      "projectName": "Documentos_159ba868"
+    },
+    {
+      "type": "java",
+      "name": "Algoritmo_1",
+      "request": "launch",
+      "mainClass": "Algoritmo_1",
+      "projectName": "Documentos_159ba868"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "App",
+      "projectName": "Documentos_159ba868"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Iniciar o Chrome em relação a localhost",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

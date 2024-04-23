@@ -3,9 +3,16 @@ import { Pressable, Text, TextInput, View, Image } from "react-native"
 import Checkbox from "expo-checkbox"
 import React, { useState } from "react"
 import { styles } from "./styles"
+import { useNavigation } from "@react-navigation/native"
 
 export default function App() {
   const [isChecked, setChecked] = useState(false)
+
+  const navigation = useNavigation()
+
+  const handlePress = () => {
+    navigation.navigate("SignUp") // Navega para a tela com o nome 'SignUp' && Depois tem que mudar para fazer uma função que confere os logins
+  }
 
   return (
     <View style={styles.container}>
@@ -49,7 +56,7 @@ export default function App() {
       </View>
 
       <View style={styles.subForm}>
-        <Pressable style={styles.formButton1}>
+        <Pressable style={styles.formButton1} onPressOut={handlePress}>
           <Text style={styles.textButton1}>ACESSAR</Text>
         </Pressable>
         <Pressable style={styles.formButton2}>
