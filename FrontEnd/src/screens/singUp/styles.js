@@ -1,21 +1,24 @@
 import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
-  container: {
+  imageContainer: {
     alignItems: "center",
     justifyContent: "center",
   },
-  imageContainer: {
+  fotoPerfil: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
     width: 150,
     height: 150,
     borderRadius: 75,
     overflow: "hidden",
   },
-  image: {
+  imagePerfil: {
     width: "100%",
     height: "100%",
   },
-  placeholder: {
+  padraoPerfil: {
     width: "100%",
     height: "100%",
     backgroundColor: "#ccc", // Cor de fundo para o espaço reservado

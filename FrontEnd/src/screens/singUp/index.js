@@ -15,19 +15,21 @@ export default function App() {
     })
     console.log(result)
     if (!result.canceled) {
-      setImage(result.assets[0].uri) // tentar colocar sem o assets
+      setImage(result.assets[0].uri)
     }
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={pickImage} style={styles.imageContainer}>
-        {image ? (
-          <Image source={{ uri: image }} style={styles.image} />
-        ) : (
-          <View style={styles.placeholder} />
-        )}
-      </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        <TouchableOpacity onPress={pickImage} style={styles.fotoPerfil}>
+          {image ? (
+            <Image source={{ uri: image }} style={styles.imagePerfil} />
+          ) : (
+            <View style={styles.padraoPerfil} />
+          )}
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

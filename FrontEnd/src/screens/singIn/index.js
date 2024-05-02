@@ -11,7 +11,7 @@ export default function App() {
   const navigation = useNavigation()
 
   const handlePress = () => {
-    navigation.navigate("SignUp") // Navega para a tela com o nome 'SignUp' && Depois tem que mudar para fazer uma função que confere os logins
+    navigation.navigate("SignUp") // Navega para a tela com o nome 'SignUp'
   }
 
   return (
@@ -56,10 +56,10 @@ export default function App() {
       </View>
 
       <View style={styles.subForm}>
-        <Pressable style={styles.formButton1} onPressOut={handlePress}>
+        <Pressable style={styles.formButton1}>
           <Text style={styles.textButton1}>ACESSAR</Text>
         </Pressable>
-        <Pressable style={styles.formButton2}>
+        <Pressable style={styles.formButton2} onPressOut={handlePress}>
           <Text style={styles.textButton2}>CRIAR CONTA</Text>
         </Pressable>
       </View>
