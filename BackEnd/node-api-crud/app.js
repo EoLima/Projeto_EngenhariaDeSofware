@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 const { sequelize, checkDatabaseConnection } = require('./config/database');
 const express = require('express');
 const userRoutes = require('./routes/userRoutes');
 const app = express();
 
+=======
+const { sequelize, checkDatabaseConnection } = require('./src/config/database');
+const express = require('express');
+const userRoutes = require('./src/routes/userRoutes');
+const app = express();
+
+
+>>>>>>> f60d49df6d65c2bba43425479302d135df7436b5
 (async () => {
   try {
     await checkDatabaseConnection();
