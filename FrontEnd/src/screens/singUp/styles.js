@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   fotoPerfil: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 40,
     width: 150,
     height: 150,
     borderRadius: 75,

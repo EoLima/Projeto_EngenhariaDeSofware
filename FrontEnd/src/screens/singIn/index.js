@@ -1,17 +1,37 @@
 import { StatusBar } from "expo-status-bar"
-import { Pressable, Text, TextInput, View, Image } from "react-native"
+import {
+  Keyboard,
+  Text,
+  TextInput,
+  View,
+  Image,
+  TouchableOpacity,
+} from "react-native"
 import Checkbox from "expo-checkbox"
 import React, { useState } from "react"
 import { styles } from "./styles"
 import { useNavigation } from "@react-navigation/native"
+import IsKeyboardOpen from "../../components/IsKeyboardOpen"
 
 export default function App() {
   const [isChecked, setChecked] = useState(false)
 
+  const isKeyboardOpen = IsKeyboardOpen()
+
   const navigation = useNavigation()
 
   const handlePress = () => {
-    navigation.navigate("SignUp") // Navega para a tela com o nome 'SignUp'
+    setTimeout(() => {
+      // Navega para a tela com o nome 'SignUp' após 100 milissegundo
+      navigation.navigate("SignUp")
+    }, 100)
+  }
+
+  const handleTextInputFocus = () => {
+    // Verifica se o Teclado esta aberto, se tiver e ele clicar em cima de novo ele fecha
+    if (isKeyboardOpen == "open") {
+      Keyboard.dismiss()
+    }
   }
 
   return (
@@ -24,14 +44,17 @@ export default function App() {
         <Text style={styles.formTitle}>Digite o seu E-mail</Text>
         <TextInput
           style={styles.formInput}
+          onPressOut={handleTextInputFocus}
           placeholder="E-mail"
           keyboardType="email-address"
           autoCapitalize="none"
           autoComplete="email"
         />
+
         <Text style={styles.formTitle}>Digite a sua Senha</Text>
         <TextInput
           style={styles.formInput}
+          onPressOut={handleTextInputFocus}
           placeholder="Senha"
           autoCapitalize="none"
           secureTextEntry
@@ -46,28 +69,26 @@ export default function App() {
             onValueChange={setChecked}
             color={isChecked ? "#FF8A00" : "#D9D9D9"}
           />
-          <Pressable>
-            <Text style={styles.text}>Lembrar minha senha</Text>
-          </Pressable>
+          <Text style={styles.text}>Lembrar minha senha</Text>
         </View>
-        <Pressable>
+        <TouchableOpacity>
           <Text style={styles.text}>Esqueci minha senha</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.subForm}>
-        <Pressable style={styles.formButton1}>
+        <TouchableOpacity style={styles.formButton1}>
           <Text style={styles.textButton1}>ACESSAR</Text>
-        </Pressable>
-        <Pressable style={styles.formButton2} onPressOut={handlePress}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.formButton2} onPressOut={handlePress}>
           <Text style={styles.textButton2}>CRIAR CONTA</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.subFormEmpresa}>
-        <Pressable style={styles.formButtonEmpresa}>
-          <Text style={styles.textEmpresa}>Quem somos ?</Text>
-        </Pressable>
+      <View style={styles.subFormCompany}>
+        <TouchableOpacity style={styles.formButtonCompany}>
+          <Text style={styles.textCompany}>Quem somos ?</Text>
+        </TouchableOpacity>
       </View>
 
       <StatusBar style="statusBar" />

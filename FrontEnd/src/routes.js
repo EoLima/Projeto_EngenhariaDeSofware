@@ -1,27 +1,36 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
 import React from "react"
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack"
 
 import SignInScreen from "../src/screens/singIn/index"
 import SignUpScreen from "../src/screens/singUp/index"
 
-const Stack = createStackNavigator()
+const AppStack = createStackNavigator()
 
 function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
+      <AppStack.Navigator
+        screenOptions={{
+          gestureEnabled: true,
+          gestureDirection: "horizontal",
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      >
+        <AppStack.Screen
           options={{ headerShown: false }}
           name="SignIn"
           component={SignInScreen}
         />
-        <Stack.Screen
+        <AppStack.Screen
           options={{ headerShown: false }}
           name="SignUp"
           component={SignUpScreen}
         />
-      </Stack.Navigator>
+      </AppStack.Navigator>
     </NavigationContainer>
   )
 }
