@@ -1,3 +1,9 @@
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../../components/Metrics"
+
 import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
@@ -5,22 +11,161 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  fotoPerfil: {
+  photoProfile: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 60,
+    marginBottom: 15,
     width: 150,
     height: 150,
     borderRadius: 75,
     overflow: "hidden",
   },
-  imagePerfil: {
+  profileImage: {
     width: "100%",
     height: "100%",
   },
-  padraoPerfil: {
+  standardProfile: {
     width: "100%",
     height: "100%",
     backgroundColor: "#ccc", // Cor de fundo para o espaço reservado
+  },
+  containerForm: {
+    flexShrink: 0,
+  },
+  containerNameFull: {
+    display: "flex",
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexShrink: 0,
+  },
+  formInput1: {
+    paddingHorizontal: 10,
+    width: 191,
+    height: 44,
+    borderRadius: 3,
+    backgroundColor: "#DCDBDB",
+  },
+  formTitle: {
+    color: "#000",
+    fontSize: 14,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 17, // ou '121.429%'
+    letterSpacing: -0.5,
+    paddingStart: 10,
+  },
+  formInput: {
+    display: "flex",
+    marginStart: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    flexShrink: 0,
+    width: 393,
+    height: 44,
+    borderRadius: 3,
+    backgroundColor: "#DCDBDB",
+  },
+  formInput2: {
+    display: "flex",
+    marginStart: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    flexShrink: 0,
+    width: 200,
+    height: 44,
+    borderRadius: 3,
+    backgroundColor: "#DCDBDB",
+  },
+  formCheckBox: {
+    display: "flex",
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    flexShrink: 0,
+    textAlign: "center",
+  },
+  subCheckBox: {
+    marginEnd: 5,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 8.168,
+    backgroundColor: "#D9D9D9",
+  },
+  text: {
+    color: "#000",
+    fontSize: 12,
+    fontStyle: "normal",
+    fontWeight: "400",
+    lineHeight: 17, // 212.5%
+    letterSpacing: -0.5,
+  },
+  subForm: {
+    display: "flex",
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 10,
+    flexShrink: 0,
+  },
+  subFormButton: {
+    borderRadius: 3,
+    justifyContent: "center",
+    width: 174,
+    height: 45.789,
+    backgroundColor: "#73C74F",
+  },
+  subTextButton: {
+    color: "#000",
+    textAlign: "center",
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 17,
+    letterSpacing: -0.5,
+  },
+  subFormOtherAcess: {
+    flexShrink: 0,
+    marginTop: 15,
+  },
+  subFormChoiceAcess: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  line: {
+    width: 87,
+    height: 2,
+  },
+  textSubFormAcess: {
+    paddingHorizontal: 10,
+    color: "#000",
+    fontSize: 14,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 17,
+    letterSpacing: -0.5,
+  },
+  containerLogo: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  logo: {
+    height: 42,
+    width: 42,
+    marginHorizontal: 15,
   },
 })
