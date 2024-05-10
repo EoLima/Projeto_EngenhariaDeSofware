@@ -23,7 +23,12 @@ const User = sequelize.define('User', {
   password: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  avatar: {
+    type: DataTypes.TEXT,
+    allowNull : true
   }
+
 });
 
 module.exports = User;
