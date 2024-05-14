@@ -69,6 +69,10 @@ async function updateUser(req, res) {
   const userId = req.params.id;
   const { firstName, lastName, email, phone, password } = req.body;
 
+  if (req.user.id !== userId) {
+    return res.status(403).json({ msg: 'Not permission.' });
+  }
+
   try {
     const user = await User.findByPk(userId);
     if (!user) {
