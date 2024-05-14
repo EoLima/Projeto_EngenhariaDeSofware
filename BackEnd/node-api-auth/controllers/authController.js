@@ -6,17 +6,18 @@ require('dotenv').config();
 async function postAuth(req, res){
     const  {email,password} = req.body;
       try {
-        const checkEmail = await User.findOne({
-          attributes : ['email','password'],
+        const user = await User.findOne({
+          attributes : ['email','password', 'id'],
            where: { email : email } });
            
-        if (!checkEmail) {
+        if (!user) {
           return res.status(400).json({msg : 'Usuário não cadastrado!'})
         }
           try{
-            const checkPassword = await bcrypt.compare(password, checkEmail.password); 
+            const checkPassword = await bcrypt.compare(password, user.password); 
             if(checkPassword){
-                const token = jwt.sign({email : email}, process.env.SECRET,{expiresIn: '1h' });
+                const tokenPayload = { id: user.id, email: user.email };
+                const token = jwt.sign({tokenPayload}, process.env.SECRET,{expiresIn: '1h' });
                 return res.status(202).json({ msg: 'Usuário autenticado', token: token });
              } else{
               return res.status(401).json({msg: 'Senha incorreta.'})
