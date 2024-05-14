@@ -4,7 +4,7 @@ const Joi = require('joi');
 
 
 async function createUser(req, res) {
-  const { firstName, lastName, email, phone, password } = req.body;
+  const { firstName, lastName, email, phone, password, avatar } = req.body;
 
   try {
     const schema = Joi.object({
@@ -24,9 +24,10 @@ async function createUser(req, res) {
           'string.pattern.base': 'Password must contain at least one uppercase letter and one number',
           'any.required': 'Password is required',
         }),
+      avatar: Joi.string().allow(null, '').max(100000)
     });
     
-    const { error, value } = schema.validate({ firstName, lastName, email, phone, password });
+    const { error, value } = schema.validate({ firstName, lastName, email, phone, password, avatar });
 
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
@@ -50,6 +51,7 @@ async function createUser(req, res) {
       email: value.email,
       phone: value.phone,
       password: hashedPassword,
+      avatar: value.avatar ? Buffer.from(value.avatar, 'base64').toString() : null
     });
 
     res.status(201).json(newUser);
