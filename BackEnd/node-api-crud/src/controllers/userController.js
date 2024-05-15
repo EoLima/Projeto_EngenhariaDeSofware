@@ -66,22 +66,25 @@ async function getUserById(req, res) {
 }
 
 async function updateUser(req, res) {
-  const userId = req.params.id;
+  const userId = parseInt(req.params.id, 10);
   const { firstName, lastName, email, phone, password } = req.body;
 
-  if (req.user.id !== userId) {
+  if (parseInt(req.user.tokenPayload.id, 10) !== userId) {
+    console.log('Permission denied: User ID from token does not match request ID');
     return res.status(403).json({ msg: 'Not permission.' });
   }
 
   try {
     const user = await User.findByPk(userId);
     if (!user) {
+      console.log('User not found');
       return res.status(404).json({ message: 'User not found' });
     }
 
     if (email && email !== user.email) {
       const existingEmailUser = await User.findOne({ where: { email } });
       if (existingEmailUser) {
+        console.log('User with this email already exists');
         return res.status(400).json({ message: 'A user with this email already exists' });
       }
     }
@@ -89,6 +92,7 @@ async function updateUser(req, res) {
     if (phone && phone !== user.phone) {
       const existingPhoneUser = await User.findOne({ where: { phone } });
       if (existingPhoneUser) {
+        console.log('User with this phone number already exists');
         return res.status(400).json({ message: 'A user with this phone number already exists' });
       }
     }
@@ -112,6 +116,7 @@ async function updateUser(req, res) {
 
     await user.save();
 
+    console.log('User updated successfully:', user);
     res.status(200).json(user);
   } catch (error) {
     console.error('Error updating user:', error);
@@ -120,22 +125,11 @@ async function updateUser(req, res) {
 }
 
 async function deleteUser(req, res) {
-  const userId = req.params.id;
-
-  try {
-    const user = await User.findByPk(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    await user.destroy();
-
-    res.status(204).json({ message: 'User deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    res.status(500).json({ message: 'Error deleting user' });
-  }
+  //
 }
+
+
+
 
 module.exports = { 
   createUser,
