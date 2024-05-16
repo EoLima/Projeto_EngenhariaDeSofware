@@ -36,3 +36,7 @@ yarn-error.*
 
 # Text
 *.txt
+
+# Vscode
+.vscode/
+

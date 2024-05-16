@@ -7,18 +7,28 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native"
 import * as ImagePicker from "expo-image-picker"
 import { styles } from "./styles"
 import Checkbox from "expo-checkbox"
 import { TextInputMask } from "react-native-masked-text"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import api from "../../services/crud"
+import { useNavigation } from "@react-navigation/native"
 
 export default function App() {
-  const [image, setImage] = useState(null)
+  const [avatar, setAvatar] = useState(null)
   const [isChecked, setChecked] = useState(false)
-  const [cell, setCell] = useState("")
-  const [birthdate, setBirthdate] = useState("")
+
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [phone, setPhone] = useState("")
+  const [birthdate, setBirthdate] = useState("") // FALTA NO BANCO DE DADOS E API
+
+  const navigation = useNavigation()
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -29,7 +39,72 @@ export default function App() {
     })
     console.log(result)
     if (!result.canceled) {
-      setImage(result.assets[0].uri)
+      setAvatar(result.assets[0].uri)
+    }
+  }
+
+  const setSingUp = async () => {
+    if (
+      firstName.length === 0 ||
+      lastName.length === 0 ||
+      email.length === 0 ||
+      phone.length === 0 ||
+      password.length === 0 ||
+      isChecked == false
+    ) {
+      Alert.alert(
+        "Erro",
+        "Por favor, preencha todos os campos e concorde com os termos de uso.",
+        [{ text: "OK" }]
+      )
+
+      console.error("Não preencheu todos os campos ou não marcou o checkbox")
+    } else {
+      try {
+        const response = await api.post("/api", {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phone: phoneField.getRawValue(),
+          password: password,
+        })
+
+        console.log("Resposta da API:", response.status)
+
+        // Opcional: mostrar um alerta de sucesso
+        Alert.alert("Sucesso", "Cadastro realizado com sucesso!", [
+          { text: "OK" },
+        ])
+
+        navigation.navigate("SignIn")
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          Alert.alert(
+            "Erro",
+            `Não foi possível realizar o cadastro, pois ${error.response.data.message}.`,
+            [{ text: "OK" }]
+          )
+
+          // Log do erro no console
+          console.error(
+            "Erro ao fazer a requisição:",
+            error.response.data.message
+          )
+        } else {
+          // Mostrar um alerta de erro
+          Alert.alert(
+            "Erro",
+            "Não foi possível realizar o cadastro. Por favor, tente novamente.",
+            [{ text: "OK" }]
+          )
+
+          // Log do erro no console
+          console.error(
+            "Erro ao fazer a requisição:",
+            error.response ? error.response.data : error.message
+          )
+        }
+      }
     }
   }
 
@@ -42,7 +117,7 @@ export default function App() {
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <TouchableOpacity onPress={pickImage} style={styles.photoProfile}>
-              {image ? (
+              {avatar ? (
                 <Image source={{ uri: image }} style={styles.profileImage} />
               ) : (
                 <View style={styles.standardProfile} />
@@ -59,6 +134,8 @@ export default function App() {
                 keyboardType="default"
                 autoCapitalize="none"
                 autoComplete="given-name"
+                value={firstName}
+                onChangeText={(text) => setFirstName(text)}
               />
               <TextInput
                 style={styles.formInput1}
@@ -66,6 +143,8 @@ export default function App() {
                 keyboardType="default"
                 autoCapitalize="none"
                 autoComplete="family-name"
+                value={lastName}
+                onChangeText={(text) => setLastName(text)}
               />
             </View>
 
@@ -76,6 +155,8 @@ export default function App() {
               keyboardType="email-address"
               autoCapitalize="none"
               autoComplete="email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
 
             <Text style={styles.formTitle}>Senha</Text>
@@ -84,6 +165,8 @@ export default function App() {
               placeholder="****************"
               autoCapitalize="none"
               secureTextEntry
+              value={password}
+              onChangeText={(text) => setPassword(text)}
             />
 
             <Text style={styles.formTitle}>Celular</Text>
@@ -99,8 +182,9 @@ export default function App() {
                 withDDD: true,
                 dddMask: "(99) ",
               }}
-              value={cell}
-              onChangeText={(text) => setCell(text)}
+              value={phone}
+              onChangeText={(text) => setPhone(text)}
+              ref={(ref) => (this.phoneField = ref)}
             />
 
             <Text style={styles.formTitle}>Data de Nascimento</Text>
@@ -115,6 +199,7 @@ export default function App() {
               }}
               value={birthdate}
               onChangeText={(text) => setBirthdate(text)}
+              ref={(ref) => (this.birthdateField = ref)}
             />
           </View>
 
@@ -133,7 +218,10 @@ export default function App() {
           </View>
 
           <View style={styles.subForm}>
-            <TouchableOpacity style={styles.subFormButton}>
+            <TouchableOpacity
+              onPressOut={setSingUp}
+              style={styles.subFormButton}
+            >
               <Text style={styles.subTextButton}>CRIAR</Text>
             </TouchableOpacity>
           </View>
