@@ -1,7 +1,7 @@
-
 const express = require('express');
-const { conectar } = require('./config/database');
-const auth = require('./routes/authRoutes');
+const { conectar } = require('./src/config/database');
+const auth = require('./src/routes/authRoutes');
+const cors = require('cors');
 const server = express();
 (async () => {
     try {
@@ -11,6 +11,8 @@ const server = express();
         console.error('Erro generalizado.');
         process.exit(1);
     }
+    
+    server.use(cors());
 
     server.use(express.json());
     server.use('/api', auth);
