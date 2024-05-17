@@ -7,19 +7,14 @@ import {
 
 import SignInScreen from "../src/screens/singIn/index"
 import SignUpScreen from "../src/screens/singUp/index"
+import HomePage from "../src/screens/homePage/index"
 
 const AppStack = createStackNavigator()
 
 function AppNavigator() {
   return (
     <NavigationContainer>
-      <AppStack.Navigator
-        screenOptions={{
-          gestureEnabled: true,
-          gestureDirection: "horizontal",
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
-      >
+      <AppStack.Navigator>
         <AppStack.Screen
           options={{ headerShown: false }}
           name="SignIn"
@@ -29,6 +24,11 @@ function AppNavigator() {
           options={{ headerShown: false }}
           name="SignUp"
           component={SignUpScreen}
+        />
+        <AppStack.Screen
+          options={{ headerShown: false }}
+          name="HomePage"
+          component={HomePage}
         />
       </AppStack.Navigator>
     </NavigationContainer>

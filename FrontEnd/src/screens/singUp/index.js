@@ -10,17 +10,19 @@ import {
   Alert,
 } from "react-native"
 import * as ImagePicker from "expo-image-picker"
+import * as FileSystem from "expo-file-system"
 import { styles } from "./styles"
 import Checkbox from "expo-checkbox"
 import { TextInputMask } from "react-native-masked-text"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import api from "../../services/crud"
 import { useNavigation } from "@react-navigation/native"
+import itsOver from "../../components/ItsOverEighteen"
 
 export default function App() {
   const [avatar, setAvatar] = useState(null)
+  const [avatarBase64, setAvatarBase64] = useState(null)
   const [isChecked, setChecked] = useState(false)
-
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -39,18 +41,28 @@ export default function App() {
     })
     console.log(result)
     if (!result.canceled) {
-      setAvatar(result.assets[0].uri)
+      const uri = result.assets[0].uri
+      setAvatar(uri)
+
+      // Converter a imagem para base64
+      const base64 = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      })
+      setAvatarBase64(base64)
     }
   }
 
   const setSingUp = async () => {
+    var over = itsOver(birthdate)
+
     if (
       firstName.length === 0 ||
       lastName.length === 0 ||
       email.length === 0 ||
       phone.length === 0 ||
       password.length === 0 ||
-      isChecked == false
+      isChecked == false ||
+      birthdate.length == 0
     ) {
       Alert.alert(
         "Erro",
@@ -59,15 +71,34 @@ export default function App() {
       )
 
       console.error("Não preencheu todos os campos ou não marcou o checkbox")
+    } else if (over == false) {
+      Alert.alert("Erro", "Somente maiores de 18 anos podem fazer cadastro.", [
+        { text: "OK" },
+      ])
+      console.error("É necessario ser maior de 18")
     } else {
       try {
-        const response = await api.post("/api", {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phone: phoneField.getRawValue(),
-          password: password,
-        })
+        let response
+        if (avatar == null) {
+           response = await api.post("/api", {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phoneField.getRawValue(),
+            password: password,
+            birthDate: birthdate,
+          })
+        } else {
+           response = await api.post("/api", {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phoneField.getRawValue(),
+            password: password,
+            avatar: avatarBase64,
+            birthDate: birthdate,
+          })
+        }
 
         console.log("Resposta da API:", response.status)
 
@@ -76,33 +107,39 @@ export default function App() {
           { text: "OK" },
         ])
 
-        navigation.navigate("SignIn")
+        setTimeout(() => {
+          // Navega para a tela com o nome 'SignUp' após 100 milissegundo
+          navigation.navigate("SignIn")
+        }, 100)
+
       } catch (error) {
-        if (error.response && error.response.status === 400) {
-          Alert.alert(
-            "Erro",
-            `Não foi possível realizar o cadastro, pois ${error.response.data.message}.`,
-            [{ text: "OK" }]
-          )
+        if (error.response) {
+          if (error.response && error.response.status === 400) {
+            Alert.alert(
+              "Erro",
+              `Não foi possível realizar o cadastro, pois ${error.response.data.message}.`,
+              [{ text: "OK" }]
+            )
 
-          // Log do erro no console
-          console.error(
-            "Erro ao fazer a requisição:",
-            error.response.data.message
-          )
-        } else {
-          // Mostrar um alerta de erro
-          Alert.alert(
-            "Erro",
-            "Não foi possível realizar o cadastro. Por favor, tente novamente.",
-            [{ text: "OK" }]
-          )
+            // Log do erro no console
+            console.error(
+              "Erro ao fazer a requisição:",
+              error.response.data.message
+            )
+          } else {
+            // Mostrar um alerta de erro
+            Alert.alert(
+              "Erro",
+              "Não foi possível realizar o cadastro. Por favor, tente novamente.",
+              [{ text: "OK" }]
+            )
 
-          // Log do erro no console
-          console.error(
-            "Erro ao fazer a requisição:",
-            error.response ? error.response.data : error.message
-          )
+            // Log do erro no console
+            console.error(
+              "Erro ao fazer a requisição:",
+              error.response.data.message
+            )
+          }
         }
       }
     }
@@ -118,7 +155,7 @@ export default function App() {
           <View style={styles.imageContainer}>
             <TouchableOpacity onPress={pickImage} style={styles.photoProfile}>
               {avatar ? (
-                <Image source={{ uri: image }} style={styles.profileImage} />
+                <Image source={{ uri: avatar }} style={styles.profileImage} />
               ) : (
                 <View style={styles.standardProfile} />
               )}

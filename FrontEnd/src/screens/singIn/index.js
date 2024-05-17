@@ -7,15 +7,21 @@ import {
   Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native"
 import Checkbox from "expo-checkbox"
 import React, { useState } from "react"
 import { styles } from "./styles"
 import { useNavigation } from "@react-navigation/native"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import api from "../../services/auth"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function App() {
   const [isChecked, setChecked] = useState(false)
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   const navigation = useNavigation()
 
@@ -26,10 +32,77 @@ export default function App() {
     }, 100)
   }
 
+  const setSingIn = async () => {
+    if (password.length === 0 || email.length === 0) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos.", [
+        { text: "OK" },
+      ])
+      console.error("Não preencheu todos os campos")
+    } else {
+      try {
+        const response = await api.post("/api/auth/login", {
+          email: email,
+          password: password,
+        })
+
+        console.log("Resposta da API:", response.status)
+
+        await AsyncStorage.setItem("@Tradefy:token", response.data.token)
+
+        Alert.alert("Sucesso", "Login realizado com sucesso!", [{ text: "OK" }])
+
+        setTimeout(() => {
+          // Navega para a tela com o nome 'SignUp' após 100 milissegundo
+          navigation.navigate("HomePage")
+        }, 100)
+      } catch (error) {
+        if (error.response) {
+          if (error.response && error.response.status === 400) {
+            Alert.alert(
+              "Erro",
+              `Não foi possível fazer login, pois ${error.response.data.msg}. Por favor, tente novamente.`,
+              [{ text: "OK" }]
+            )
+
+            // Log do erro no console
+            console.error(
+              "Erro ao fazer a requisição 400:",
+              error.response.data.msg
+            )
+          } else if (error.response && error.response.status === 401) {
+            // Mostrar um alerta de erro
+            Alert.alert(
+              "Erro",
+              `Não foi possível fazer login, pois ${error.response.data.msg}. Por favor, tente novamente.`,
+              [{ text: "OK" }]
+            )
+
+            // Log do erro no console
+            console.error(
+              "Erro ao fazer a requisição 401:",
+              error.response.data.msg
+            )
+          } else {
+            // Mostrar um alerta de erro
+            Alert.alert(
+              "Erro",
+              `Não foi possível fazer login. Por favor, tente novamente.`,
+              [{ text: "OK" }]
+            )
+
+            // Log do erro no console
+            console.error(
+              "Erro ao fazer a requisição:",
+              error.response.data.msg
+            )
+          }
+        }
+      }
+    }
+  }
+
   return (
-    <KeyboardAwareScrollView
-      behavior={"height"}
-    >
+    <KeyboardAwareScrollView behavior={"height"}>
       <TouchableWithoutFeedback
         touchSoundDisabled
         onPress={() => Keyboard.dismiss()}
@@ -50,6 +123,8 @@ export default function App() {
               keyboardType="email-address"
               autoCapitalize="none"
               autoComplete="email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
 
             <Text style={styles.formTitle}>Digite a sua Senha</Text>
@@ -58,6 +133,8 @@ export default function App() {
               placeholder="Senha"
               autoCapitalize="none"
               secureTextEntry
+              value={password}
+              onChangeText={(text) => setPassword(text)}
             />
           </View>
 
@@ -77,7 +154,7 @@ export default function App() {
           </View>
 
           <View style={styles.subForm}>
-            <TouchableOpacity style={styles.formButton1}>
+            <TouchableOpacity style={styles.formButton1} onPress={setSingIn}>
               <Text style={styles.textButton1}>ACESSAR</Text>
             </TouchableOpacity>
             <TouchableOpacity
