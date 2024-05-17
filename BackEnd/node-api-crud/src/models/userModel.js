@@ -26,7 +26,11 @@ const User = sequelize.define('User', {
   },
   avatar: {
     type: DataTypes.TEXT,
-    allowNull : true
+    allowNull: true
+  },
+  birthDate: {
+    type: DataTypes.DATE,
+    allowNull: false
   }
 
 });

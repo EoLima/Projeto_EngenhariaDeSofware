@@ -1,12 +1,17 @@
 const User = require('../models/userModel');
 const bcryptUtils = require('../utils/bcryptUtils');
 const Joi = require('joi');
+const { parse, format } = require('date-fns');
 
 
 async function createUser(req, res) {
-  const { firstName, lastName, email, phone, password, avatar } = req.body;
+  const { firstName, lastName, email, phone, password, avatar, birthDate } = req.body;
 
   try {
+
+    const parsedDate = parse(birthDate, 'dd/MM/yyyy', new Date());
+    const isoDate = format(parsedDate, 'yyyy-MM-dd');
+
     const schema = Joi.object({
       firstName: Joi.string().max(50).required(), 
       lastName: Joi.string().max(50).required(),  
@@ -24,10 +29,11 @@ async function createUser(req, res) {
           'string.pattern.base': 'Password must contain at least one uppercase letter and one number',
           'any.required': 'Password is required',
         }),
-      avatar: Joi.string().allow(null, '').max(100000)
+      avatar: Joi.string().allow(null, '').max(100000),
+      birthDate: Joi.date().iso().required()
     });
     
-    const { error, value } = schema.validate({ firstName, lastName, email, phone, password, avatar });
+    const { error, value } = schema.validate({ firstName, lastName, email, phone, password, avatar, birthDate: isoDate });
 
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
@@ -51,7 +57,8 @@ async function createUser(req, res) {
       email: value.email,
       phone: value.phone,
       password: hashedPassword,
-      avatar: value.avatar ? Buffer.from(value.avatar, 'base64').toString() : null
+      avatar: value.avatar ? Buffer.from(value.avatar, 'base64').toString() : null,
+      birthDate: isoDate
     });
 
     res.status(201).json(newUser);
