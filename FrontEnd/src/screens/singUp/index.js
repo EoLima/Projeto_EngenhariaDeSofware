@@ -28,7 +28,7 @@ export default function App() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [phone, setPhone] = useState("")
-  const [birthdate, setBirthdate] = useState("") // FALTA NO BANCO DE DADOS E API
+  const [birthdate, setBirthdate] = useState("")
 
   const navigation = useNavigation()
 
@@ -39,16 +39,19 @@ export default function App() {
       aspect: [1, 1],
       quality: 1,
     })
-    console.log(result)
     if (!result.canceled) {
-      const uri = result.assets[0].uri
-      setAvatar(uri)
+      try {
+        const uri = result.assets[0].uri
+        setAvatar(uri)
 
-      // Converter a imagem para base64
-      const base64 = await FileSystem.readAsStringAsync(uri, {
-        encoding: FileSystem.EncodingType.Base64,
-      })
-      setAvatarBase64(base64)
+        // Converter a imagem para base64
+        const base64 = await FileSystem.readAsStringAsync(uri, {
+          encoding: "base64",
+        })
+        setAvatarBase64(base64)
+      } catch (error) {
+        console.log("error")
+      }
     }
   }
 
@@ -72,15 +75,17 @@ export default function App() {
 
       console.error("Não preencheu todos os campos ou não marcou o checkbox")
     } else if (over == false) {
-      Alert.alert("Erro", "Somente maiores de 18 anos podem fazer cadastro.", [
-        { text: "OK" },
-      ])
-      console.error("É necessario ser maior de 18")
+      Alert.alert(
+        "Erro",
+        "É necessário ser maior de 18 anos e que a data de nascimeno seja valida!",
+        [{ text: "OK" }]
+      )
+      console.error("É necessário ser maior de 18 anos e que a data de nascimeno seja valida!")
     } else {
       try {
         let response
-        if (avatar == null) {
-           response = await api.post("/api", {
+        if (avatarBase64 == null) {
+          response = await api.post("/api", {
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -89,7 +94,7 @@ export default function App() {
             birthDate: birthdate,
           })
         } else {
-           response = await api.post("/api", {
+          response = await api.post("/api", {
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -111,7 +116,6 @@ export default function App() {
           // Navega para a tela com o nome 'SignUp' após 100 milissegundo
           navigation.navigate("SignIn")
         }, 100)
-
       } catch (error) {
         if (error.response) {
           if (error.response && error.response.status === 400) {
