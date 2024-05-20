@@ -29,7 +29,7 @@ async function createUser(req, res) {
           'string.pattern.base': 'Password must contain at least one uppercase letter and one number',
           'any.required': 'Password is required',
         }),
-      avatar: Joi.string().allow(null, '').max(100000),
+      avatar: Joi.string().allow(null, ''),
       birthDate: Joi.date().iso().required()
     });
     
